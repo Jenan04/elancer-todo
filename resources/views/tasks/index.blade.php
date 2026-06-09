@@ -35,17 +35,29 @@
             
             <div class="col-span-12 lg:col-span-8 space-y-4">
                 @forelse($tasks as $task)
-                    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex items-center gap-4 hover:shadow-sm transition-all group {{ $task->status === 'completed' ? 'opacity-60' : '' }}">
+                    {{-- <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex items-center gap-4 hover:shadow-sm transition-all group {{ $task->status === 'completed' ? 'opacity-60' : '' }}"> --}}
+                        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex items-center gap-4 hover:shadow-sm transition-all group {{ $task->status->value === 'completed' ? 'opacity-60 bg-surface-container-low' : '' }}">
                         
-                        <input 
+                        {{-- <input 
                             class="task-checkbox w-5 h-5 rounded-full border-2 border-outline-variant text-secondary focus:ring-secondary cursor-pointer" 
                             id="task-{{ $task->id }}" 
                             type="checkbox"
                             {{ $task->status === 'completed' ? 'checked' : '' }}
-                        >
+                        > --}}
+
+                        <form action="{{ route('tasks.update', $task) }}" method="POST" class="inline flex items-center">
+    @csrf
+    @method('PUT')
+    <input type="hidden" name="status" value="{{ $task->status->value === 'completed' ? \App\Enums\TaskStatus::ACTIVE->value : \App\Enums\TaskStatus::COMPLETED->value }}">
+    <button type="submit" class="focus:outline-none transition-transform active:scale-90 flex items-center">
+        <span class="material-symbols-outlined text-[24px] select-none {{ $task->status->value === 'completed' ? 'text-tertiary font-variation-icon-filled' : 'text-on-surface-variant hover:text-primary' }}">
+            {{ $task->status->value === 'completed' ? 'check_circle' : 'circle' }}
+        </span>
+    </button>
+</form>
                         
                         <div class="flex-grow">
-                            <label class="font-body-lg text-body-lg text-on-surface block cursor-pointer transition-colors {{ $task->status === 'completed' ? 'line-through text-outline' : '' }}" for="task-{{ $task->id }}">
+                            {{-- <label class="font-body-lg text-body-lg text-on-surface block cursor-pointer transition-colors {{ $task->status === 'completed' ? 'line-through text-outline' : '' }}" for="task-{{ $task->id }}">
                                 {{ $task->title }}
                             </label>
                             <div class="flex items-center gap-4 mt-1">
@@ -54,7 +66,17 @@
                                         {{ $task->status === 'completed' ? 'check_circle' : 'calendar_today' }}
                                     </span>
                                     {{ $task->status === 'completed' ? 'Completed' : ($task->due_at ? $task->due_at->diffForHumans() : 'No deadline') }}
-                                </span>
+                                </span> --}}
+                                <label class="font-body-lg text-body-lg block transition-colors {{ $task->status->value === 'completed' ? 'line-through text-on-surface-variant/50 font-normal' : 'text-on-surface font-medium' }}">
+    {{ $task->title }}
+</label>
+<div class="flex items-center gap-4 mt-1">
+    <span class="flex items-center gap-1 text-label-sm font-label-sm text-on-surface-variant">
+        <span class="material-symbols-outlined text-[14px]">
+            {{ $task->status->value === 'completed' ? 'task_alt' : 'calendar_today' }}
+        </span>
+        {{ $task->status->value === 'completed' ? 'Completed' : ($task->due_date ? \Carbon\Carbon::parse($task->due_date)->diffForHumans() : 'No deadline') }}
+    </span>
                                 @if($task->client_or_project)
                                     <span class="px-2 py-0.5 bg-surface-container-high text-primary rounded text-[10px] font-bold uppercase tracking-tighter">
                                         {{ $task->client_or_project }}
@@ -62,12 +84,16 @@
                                 @endif
                             </div>
                         </div>
-
+{{-- 
                         <span class="px-2 py-1 rounded-lg text-label-sm font-label-sm 
                             {{ $task->priority === 'high' ? 'bg-error-container text-on-error-container' : ($task->priority === 'medium' ? 'bg-surface-variant text-on-secondary-fixed-variant' : 'bg-secondary-container text-on-secondary-fixed-variant') }}">
-                            {{ ucfirst($task->priority ?? 'low') }}
-                        </span>
+                            {{-- {{ ucfirst($task->priority ?? 'low') }} 
+                            {{ ucfirst($task->priority->value ?? 'low') }}
+                        </span> --}}
 
+                        <span class="px-2 py-1 rounded-lg text-label-sm font-label-sm {{ $task->priority->colorClass() }}">
+    {{ ucfirst($task->priority->value ?? 'low') }}
+</span>
                         <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <a href="{{ route('tasks.edit', $task) }}" class="material-symbols-outlined text-on-surface-variant hover:text-primary p-1 rounded-full hover:bg-surface-container">edit</a>
                             <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure?')">

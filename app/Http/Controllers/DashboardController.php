@@ -18,11 +18,17 @@ class DashboardController extends Controller
             ? round(($todayCompletedCount / $todayTasksCount) * 100) 
             : 0;
 
-        $upcomingDeadlines = Task::where('status', 'active')
-            ->whereNotNull('due_at')
-            ->orderBy('due_at', 'asc')
-            ->take(3) 
-            ->get();
+        // $upcomingDeadlines = Task::where('status', 'active')
+        //     ->whereNotNull('due_at')
+        //     ->orderBy('due_at', 'asc')
+        //     ->take(3) 
+        //     ->get();
+
+$upcomingDeadlines = Task::where('status', 'active')
+    ->whereNotNull('due_date')   
+    ->orderBy('due_date', 'asc')  
+    ->take(3) 
+    ->get();
 
         $recentActivities = Task::latest('updated_at')
             ->where('updated_at', '>=', now()->subHours(24))

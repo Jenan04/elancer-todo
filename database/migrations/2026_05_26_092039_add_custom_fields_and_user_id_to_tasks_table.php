@@ -20,7 +20,9 @@ return new class extends Migration
 
             $table->string('client_or_project')->nullable()->after('description');
             $table->enum('priority', ['low', 'medium', 'high'])->default('medium')->nullable()->after('status');
-            $table->dateTime('due_at')->nullable()->after('completed_at');
+            // $table->dateTime('due_at')->nullable()->after('completed_at');
+            $table->date('due_date')->nullable();
+            $table->time('due_time')->nullable();
         });
     }
 

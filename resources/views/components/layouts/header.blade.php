@@ -9,12 +9,11 @@
     <div class="flex items-center gap-6">
         <div class="flex items-center gap-4">
             <button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors" data-icon="notifications">notifications</button>
-            
-            @if(isset($actions))
-                {{ $actions }}
-            @endif
 
             <button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors" data-icon="account_circle">account_circle</button>
+             @if(isset($actions))
+                {{ $actions }}
+            @endif
         </div>
     </div>
 </header>
