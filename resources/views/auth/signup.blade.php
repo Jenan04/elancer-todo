@@ -109,7 +109,7 @@
 
         <p class="text-center text-body-sm text-on-surface-variant">
             Already have an account? 
-            <a href="{{ route('login') }}" id="to-login-link" class="text-primary hover:underline font-bold">Sign In</a>
+            <a href="{{ route('show.login') }}" id="to-login-link" class="text-primary hover:underline font-bold">Sign In</a>
         </p>
 
     </div>

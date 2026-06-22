@@ -31,7 +31,7 @@
         </div>
 {{-- <x-layouts.app>
     <x-slot:title>Focus - login</x-slot:title> --}}
-        <form action="{{ route('login') }}" method="POST" class="flex flex-col gap-4" novalidate>
+        <form action="/login" method="POST" class="flex flex-col gap-4" novalidate>
             @csrf
 
             <div class="flex flex-col gap-1.5">
@@ -103,7 +103,7 @@
 
         <p class="text-center text-body-sm text-on-surface-variant">
             Don't have an account? 
-            <a href="{{ route('signup') }}" class="text-primary hover:underline font-bold">Sign up</a>
+            <a href="{{ route('show.register') }}" class="text-primary hover:underline font-bold">Sign up</a>
         </p>
 
     </div>
